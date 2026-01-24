@@ -1,118 +1,163 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {
-  Zap,
-  Server,
-  Route as RouteIcon,
-  Shield,
-  Waves,
-  Sparkles,
-} from 'lucide-react'
+import { Award, Flame, Heart, Sparkles, TrendingUp, Zap } from 'lucide-react'
 
-export const Route = createFileRoute('/')({ component: App })
+import { HeroCarousel } from '@/components/carousel/HeroCarousel'
+import { HeroBanner } from '@/components/carousel/HeroBanner'
+import { CategorySidebar } from '@/components/categories/CategorySidebar'
+import { DealsSection } from '@/components/deals/DealsSection'
+import { ProductSection } from '@/components/product/ProductSection'
+import { FilterSidebar } from '@/components/product/FilterSidebar'
+import { SortDropdown } from '@/components/product/SortDropdown'
+import { ActiveFilters } from '@/components/product/ActiveFilters'
+import { InfiniteProductGrid } from '@/components/product/InfiniteProductGrid'
+import { useFlashSale, useForYou, useHotDeals } from '@/hooks/use-products'
 
-function App() {
-  const features = [
-    {
-      icon: <Zap className="w-12 h-12 text-cyan-400" />,
-      title: 'Powerful Server Functions',
-      description:
-        'Write server-side code that seamlessly integrates with your client components. Type-safe, secure, and simple.',
-    },
-    {
-      icon: <Server className="w-12 h-12 text-cyan-400" />,
-      title: 'Flexible Server Side Rendering',
-      description:
-        'Full-document SSR, streaming, and progressive enhancement out of the box. Control exactly what renders where.',
-    },
-    {
-      icon: <RouteIcon className="w-12 h-12 text-cyan-400" />,
-      title: 'API Routes',
-      description:
-        'Build type-safe API endpoints alongside your application. No separate backend needed.',
-    },
-    {
-      icon: <Shield className="w-12 h-12 text-cyan-400" />,
-      title: 'Strongly Typed Everything',
-      description:
-        'End-to-end type safety from server to client. Catch errors before they reach production.',
-    },
-    {
-      icon: <Waves className="w-12 h-12 text-cyan-400" />,
-      title: 'Full Streaming Support',
-      description:
-        'Stream data from server to client progressively. Perfect for AI applications and real-time updates.',
-    },
-    {
-      icon: <Sparkles className="w-12 h-12 text-cyan-400" />,
-      title: 'Next Generation Ready',
-      description:
-        'Built from the ground up for modern web applications. Deploy anywhere JavaScript runs.',
-    },
-  ]
+export const Route = createFileRoute('/')({ component: HomePage })
+
+function HomePage() {
+  // Fetch product sections
+  const { data: flashSaleProducts, isLoading: flashSaleLoading } = useFlashSale(12)
+  const { data: forYouProducts, isLoading: forYouLoading } = useForYou(12)
+  const { data: hotDealsProducts, isLoading: hotDealsLoading } = useHotDeals(12)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      <section className="relative py-20 px-6 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10"></div>
-        <div className="relative max-w-5xl mx-auto">
-          <div className="flex items-center justify-center gap-6 mb-6">
-            <img
-              src="/tanstack-circle-logo.png"
-              alt="TanStack Logo"
-              className="w-24 h-24 md:w-32 md:h-32"
-            />
-            <h1 className="text-6xl md:text-7xl font-black text-white [letter-spacing:-0.08em]">
-              <span className="text-gray-300">TANSTACK</span>{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                START
-              </span>
-            </h1>
-          </div>
-          <p className="text-2xl md:text-3xl text-gray-300 mb-4 font-light">
-            The framework for next generation AI applications
-          </p>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-8">
-            Full-stack framework powered by TanStack Router for React and Solid.
-            Build modern applications with server functions, streaming, and type
-            safety.
-          </p>
-          <div className="flex flex-col items-center gap-4">
-            <a
-              href="https://tanstack.com/start"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-cyan-500/50"
-            >
-              Documentation
-            </a>
-            <p className="text-gray-400 text-sm mt-2">
-              Begin your TanStack Start journey by editing{' '}
-              <code className="px-2 py-1 bg-slate-700 rounded text-cyan-400">
-                /src/routes/index.tsx
-              </code>
-            </p>
+    <>
+      {/* Hero Section with Category Sidebar */}
+      <section className="bg-gradient-to-b from-[hsl(var(--muted))]/50 to-transparent py-6">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="flex gap-6">
+            {/* Category Sidebar - Hidden on mobile/tablet */}
+            <div className="hidden lg:block sticky top-32 self-start">
+              <CategorySidebar />
+            </div>
+
+            {/* Main Hero Content */}
+            <div className="flex-1 min-w-0">
+              {/* Hero Carousel */}
+              <HeroCarousel />
+              
+              {/* Hero Banner with promo cards */}
+              <div className="mt-6">
+                <HeroBanner />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10"
-            >
-              <div className="mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-white mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-gray-400 leading-relaxed">
-                {feature.description}
-              </p>
+      {/* Trust Badges / Features Bar */}
+      <section className="border-y border-[hsl(var(--border))] bg-[hsl(var(--card))] py-6">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="flex items-center gap-3 p-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[hsl(var(--primary))]/10">
+                <TrendingUp className="h-6 w-6 text-[hsl(var(--primary))]" />
+              </div>
+              <div>
+                <p className="font-semibold text-[hsl(var(--foreground))]">Free Shipping</p>
+                <p className="text-sm text-[hsl(var(--muted-foreground))]">On orders over ৳999</p>
+              </div>
             </div>
-          ))}
+            <div className="flex items-center gap-3 p-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[hsl(var(--secondary))]/20">
+                <Award className="h-6 w-6 text-[hsl(var(--secondary))]" />
+              </div>
+              <div>
+                <p className="font-semibold text-[hsl(var(--foreground))]">Best Quality</p>
+                <p className="text-sm text-[hsl(var(--muted-foreground))]">Verified products</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[hsl(var(--accent))]/10">
+                <Zap className="h-6 w-6 text-[hsl(var(--accent))]" />
+              </div>
+              <div>
+                <p className="font-semibold text-[hsl(var(--foreground))]">Fast Delivery</p>
+                <p className="text-sm text-[hsl(var(--muted-foreground))]">24/7 express service</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10">
+                <Sparkles className="h-6 w-6 text-emerald-500" />
+              </div>
+              <div>
+                <p className="font-semibold text-[hsl(var(--foreground))]">Secure Payment</p>
+                <p className="text-sm text-[hsl(var(--muted-foreground))]">100% protected</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-    </div>
+
+      {/* Today's Deals */}
+      <DealsSection />
+
+      {/* Flash Sale Section */}
+      <ProductSection
+        title="Flash Sale"
+        subtitle="Limited time offers - Grab them fast!"
+        icon={<Zap className="h-5 w-5" />}
+        products={flashSaleProducts || []}
+        isLoading={flashSaleLoading}
+        viewAllLink="/deals/flash"
+        className="bg-gradient-to-r from-[hsl(var(--accent))]/10 to-transparent"
+      />
+
+      {/* For You Section */}
+      <ProductSection
+        title="For You"
+        subtitle="Personalized picks based on your preferences"
+        icon={<Heart className="h-5 w-5" />}
+        products={forYouProducts || []}
+        isLoading={forYouLoading}
+        viewAllLink="/for-you"
+      />
+
+      {/* Hot Deals Section */}
+      <ProductSection
+        title="Hot Deals"
+        subtitle="Best offers from top sellers"
+        icon={<Flame className="h-5 w-5" />}
+        products={hotDealsProducts || []}
+        isLoading={hotDealsLoading}
+        viewAllLink="/deals/hot"
+        className="bg-[hsl(var(--muted))]"
+      />
+
+      {/* All Products Section with Filters */}
+      <section className="py-10">
+        <div className="mx-auto max-w-7xl px-4">
+          {/* Section Header */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-[hsl(var(--foreground))]">
+              All Products
+            </h2>
+            <p className="mt-1 text-sm text-[hsl(var(--muted-foreground))]">
+              Explore our wide selection of quality products
+            </p>
+          </div>
+
+          {/* Filters + Products Layout */}
+          <div className="flex gap-8">
+            {/* Filter Sidebar - Hidden on mobile */}
+            <div className="hidden lg:block">
+              <FilterSidebar />
+            </div>
+
+            {/* Products Area */}
+            <div className="flex-1">
+              {/* Sort & Active Filters */}
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <ActiveFilters />
+                <SortDropdown />
+              </div>
+
+              {/* Product Grid with Load More */}
+              <InfiniteProductGrid />
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   )
 }

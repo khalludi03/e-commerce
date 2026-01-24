@@ -3,16 +3,14 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
-
-import Header from '../components/Header'
-
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 import appCss from '../styles.css?url'
-
 import type { QueryClient } from '@tanstack/react-query'
+import { Header } from '@/components/layout/header/Header'
+import { Footer } from '@/components/layout/footer/Footer'
+import { ToastProvider } from '@/components/ui/toast'
+
+
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -29,7 +27,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Zynex.com - Multi-Vendor E-Commerce',
+      },
+      {
+        name: 'description',
+        content: 'Shop the best products from verified sellers across Bangladesh. Electronics, Fashion, Home & Living, and more.',
       },
     ],
     links: [
@@ -49,21 +51,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        <Header />
-        {children}
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-            TanStackQueryDevtools,
-          ]}
-        />
+      <body className="min-h-screen flex flex-col">
+        <ToastProvider>
+          <Header />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </ToastProvider>
         <Scripts />
       </body>
     </html>

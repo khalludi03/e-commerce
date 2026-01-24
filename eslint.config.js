@@ -5,6 +5,13 @@ import { tanstackConfig } from '@tanstack/eslint-config'
 export default [
   ...tanstackConfig,
   {
-    ignores: ['.output/**', 'dist/**', 'build/**', 'node_modules/**'],
+    ignores: [
+      '.output/**',
+      'dist/**',
+      'build/**',
+      'node_modules/**',
+      '*.config.js',
+      '*.config.ts',
+    ],
   },
 ]
