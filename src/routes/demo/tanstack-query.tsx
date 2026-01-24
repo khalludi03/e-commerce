@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/demo/tanstack-query')({
   component: TanStackQueryDemo,
@@ -12,7 +12,7 @@ type Todo = {
 }
 
 function TanStackQueryDemo() {
-  const { data, refetch } = useQuery<Todo[]>({
+  const { data, refetch } = useQuery<Array<Todo>>({
     queryKey: ['todos'],
     queryFn: () => fetch('/demo/api/tq-todos').then((res) => res.json()),
     initialData: [],
@@ -45,6 +45,7 @@ function TanStackQueryDemo() {
       <div className="w-full max-w-2xl p-8 rounded-xl backdrop-blur-md bg-black/50 shadow-xl border-8 border-black/10">
         <h1 className="text-2xl mb-4">TanStack Query Todos list</h1>
         <ul className="mb-4 space-y-2">
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {data?.map((t) => (
             <li
               key={t.id}
